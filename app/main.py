@@ -88,14 +88,14 @@ def move():
 	directions = ['up', 'down', 'left', 'right']
 	direction = 'none'
 	
-	if(health < 80):
+	if(health < 60):
 		behaviour = "food"
 	else:
 		behaviour = "chase tail"
 	
 	if(head_x == target_x and head_y == target_y):
-		target_x = food[random.randint(0, len(food))]["x"]
-		target_y = food[random.randint(0, len(food))]["y"]
+		target_x = food[random.randint(0, len(food)-1)]["x"]
+		target_y = food[random.randint(0, len(food)-1)]["y"]
 		
 			
 	if(head_x == 0):
@@ -249,7 +249,7 @@ def checkDir(head_x, head_y, height, width, length, body, other_snakes):
 				
 	#directions now only movements that won't kill it from running into another snake
 
-	if(directions):
+	if(len(directions) > 0):
 		return True
 	else:
 		return False
