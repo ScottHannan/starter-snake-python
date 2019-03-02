@@ -123,7 +123,7 @@ def move():
 		elif(head_y - target_y < 0 and "down" in directions):
 			direction = 'down'
 	elif(behavour == "chase tail"):
-		
+		pass
 
 	if(direction == 'none'):
 		if(len(directions) > 0):
