@@ -88,7 +88,7 @@ def move():
 	directions = ['up', 'down', 'left', 'right']
 	direction = 'none'
 	
-	if(health < 60):
+	if(health < 82):
 		behaviour = "food"
 	else:
 		behaviour = "chase tail"
