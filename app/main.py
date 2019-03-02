@@ -96,7 +96,8 @@ def move():
 	if(head_x == target_x and head_y == target_y):
 		target_x = food[random.randint(0, len(food))]["x"]
 		target_y = food[random.randint(0, len(food))]["y"]
-	
+		
+			
 	if(head_x == 0):
 		directions.remove("left")
 	if(head_x == width-1):
@@ -135,8 +136,27 @@ def move():
 				directions.remove("down")
 				
 	#directions now only movements that won't kill it from running into another snake
+
+	if("left" in directions):
+		flag = checkDir(head_x-1, head_y, height, width, length, body, other_snakes)
+		if(flag == False):
+			directions.remove("left")
 	
+	if("right" in directions):
+		flag = checkDir(head_x+1, head_y, height, width, length, body, other_snakes)
+		if(flag == False):
+			directions.remove("right")
 		
+	if("up" in directions):
+		flag = checkDir(head_x, head_y-1, height, width, length, body, other_snakes)
+		if(flag == False):
+			directions.remove("up")
+			
+	if("down" in directions):
+		flag = checkDir(head_x, head_y+1, height, width, length, body, other_snakes)
+		if(flag == False):
+			directions.remove("down")
+			
 	#seek food
 	if(behaviour == "food"):
 		if(head_x - target_x > 0 and "left" in directions):
@@ -187,7 +207,53 @@ def move():
 	return move_response(direction)
 
 	
+def checkDir(head_x, head_y, height, width, length, body, other_snakes):
+	directions = ['up', 'down', 'left', 'right']
+		
+	if(head_x == 0):
+		directions.remove("left")
+	if(head_x == width-1):
+		directions.remove("right")
+	if(head_y == 0):
+		directions.remove("up")
+	if(head_y == height-1):
+		directions.remove("down")	
 
+	
+	for i in range(1,length):
+		part_x = body[i]["x"]
+		part_y = body[i]["y"]
+		if(head_x - part_x == 1 and head_y - part_y == 0 and "left" in directions):
+			directions.remove("left")
+		if(head_x - part_x == -1 and head_y - part_y == 0 and "right" in directions):
+			directions.remove("right")
+		if(head_y - part_y == 1 and head_x - part_x == 0 and "up" in directions):
+			directions.remove("up")
+		if(head_y - part_y == -1 and head_x - part_x == 0 and "down" in directions):
+			directions.remove("down")	
+	
+	#directions is now only movements that won't kill the snake from walls or itself
+	
+	for i in range(0, len(other_snakes)):
+		for j in range(0, len(other_snakes[i]["body"])):
+			part_x = other_snakes[i]["body"][j]["x"]
+			part_y = other_snakes[i]["body"][j]["y"]
+			if(head_x - part_x == 1 and head_y - part_y == 0 and "left" in directions):
+				directions.remove("left")
+			if(head_x - part_x == -1 and head_y - part_y == 0 and "right" in directions):
+				directions.remove("right")
+			if(head_y - part_y == 1 and head_x - part_x == 0 and "up" in directions):
+				directions.remove("up")
+			if(head_y - part_y == -1 and head_x - part_x == 0 and "down" in directions):
+				directions.remove("down")
+				
+	#directions now only movements that won't kill it from running into another snake
+
+	if(directions):
+		return True
+	else:
+		return False
+	
 
 @bottle.post('/end')
 def end():
